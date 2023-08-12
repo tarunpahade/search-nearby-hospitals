@@ -4,7 +4,8 @@ import client from "@/dbConfig/dbConfig";
 import { NextApiRequest, NextApiResponse } from "next";
 import bcryptjs from "bcryptjs";
 import { NextResponse } from "next/server";
-import {convertStreamToJson }from "@/middleware/index";
+import { convertStreamToJson } from "@/helpers/convertStremToJson";
+
 
 
 export async function POST(request: NextApiRequest) {

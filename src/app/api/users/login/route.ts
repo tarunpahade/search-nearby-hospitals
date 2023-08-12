@@ -1,56 +1,56 @@
-
-import { connect } from "@/dbConfig/dbConfig";
-import client from "@/dbConfig/dbConfig"; 
+import client from "@/dbConfig/dbConfig";
 import { NextApiRequest, NextApiResponse } from "next";
 import bcryptjs from "bcryptjs";
-import { NextResponse } from "next/server";
-import {convertStreamToJson }from "@/middleware/index";
 import jwt from "jsonwebtoken";
+import { convertStreamToJson } from "@/helpers/convertStremToJson";
+import { NextResponse } from "next/server";
 export async function POST(request: NextApiRequest) {
-try {
+  try {
+    const reqBody = await convertStreamToJson(request.body);
+    console.log(reqBody);
 
-   const reqBody=await convertStreamToJson(request.body)
-   console.log(reqBody);
-   
-const { username, password } = reqBody;
+    const { username, password } = reqBody;
 
-//check if user exists
-const db=client.db("test");
-const Users = db.collection("users");
-const user= await Users.findOne({username})
+    //check if user exists
+    const db = client.db("test");
+    const Users = db.collection("users");
+    const user = await Users.findOne({ username });
 
-if(!user){
-return NextResponse.json({error:'User Not Found'}, {status:400})
-}
-console.log(user,'user found');
+    if (!user) {
+      return NextResponse.json(
+        { error: "User does not exist" },
+        { status: 400 }
+      );
+    }
+    console.log("user exists");
 
-//check password is correct 
-const vaildPassword= await bcryptjs.compare(password, user.password)
-if(!vaildPassword){
-return NextResponse.json({error:'Invalid Password'}, {status:400})
-}
-console.log(vaildPassword,'user had correct pass');
+    //check password is correct
+    const vaildPassword = await bcryptjs.compare(password, user.password);
+    if (!vaildPassword) {
+      return NextResponse.json({ error: "Invalid Password" }, { status: 400 });
+    }
+    console.log(user);
 
-//create token data
-const tokenData={
-id:user._id,
-username:user.username,
-email:user.email,
-}
-//create token
-const token=jwt.sign(tokenData, process.env.TOKEN_SECRET!, {expiresIn:'1d'})
-console.log('login successful');
+    //create token data
+    const tokenData = {
+      id: user._id,
+      username: user.username,
+      email: user.email,
+    };
+    //create tokens
+    const token = await jwt.sign(tokenData, process.env.TOKEN_SECRET!, {
+      expiresIn: "1d",
+    });
 
-const response=NextResponse.json({
-message:'User logged in successfully',
-success:true,
-})
-response.cookies.set('token', token, {
-httpOnly:true
-})
-return response
-} catch (error: any) {
-return NextResponse.json({ error: error.message }, { status: 500 });
-}
-
+    const response = NextResponse.json({
+      message: "Login successful",
+      success: true,
+    });
+    response.cookies.set("token", token, {
+      httpOnly: true,
+    });
+    return response;
+  } catch (error: any) {
+    return NextResponse.json({ error: error.message }, { status: 500 });
+  }
 }
