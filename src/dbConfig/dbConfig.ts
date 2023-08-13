@@ -25,5 +25,7 @@ export async function connect() {
 const client = new MongoClient(uri, {
     connectTimeoutMS: 30000,
   });
- const db=  client
- export default client;  
+ 
+ const db = client.db("test");
+const Users = db.collection("users");
+ export default Users;  

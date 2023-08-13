@@ -1,25 +1,22 @@
 
 import { connect } from "@/dbConfig/dbConfig";
-import client from "@/dbConfig/dbConfig"; 
+import Users from "@/dbConfig/dbConfig"; 
 import { NextApiRequest, NextApiResponse } from "next";
 import bcryptjs from "bcryptjs";
 import { NextResponse } from "next/server";
 import { convertStreamToJson } from "@/helpers/convertStremToJson";
+import { sendMail } from "@/helpers/mailer";
 
 
 
 export async function POST(request: NextApiRequest) {
   try {
     const reqBody = await convertStreamToJson(request.body);
-    console.log('this sis bodu');
+    console.log('this is body',reqBody);
     
-    const db=client.db("test");
-    const Users = db.collection("users");
-   
     
     const { username, email, password } = reqBody;
 
-    console.log(reqBody);
 
     //Check if user already exists
     const user1 = await Users.findOne({ email: email });
@@ -32,7 +29,7 @@ export async function POST(request: NextApiRequest) {
     //hash password
     const salt = await bcryptjs.genSalt(10);
     const hashedPassword = await bcryptjs.hash(password, salt);
-console.log(hashedPassword);
+console.log('hashedPassword',hashedPassword);
 
     const newUser = {
       username,
@@ -42,7 +39,12 @@ console.log(hashedPassword);
       isAdmin:false
     }
     const savedUser = await Users.insertOne(newUser)
-    console.log(savedUser);
+    console.log('Saving the user',savedUser);
+
+//send email
+const mail=await  sendMail({email:email,emailtype:'verify',userId:savedUser.insertedId})
+console.log(mail,'thsi is the sent mail');
+
     return NextResponse.json({
       message: "User created successfully",
       success: true,

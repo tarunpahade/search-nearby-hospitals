@@ -18,6 +18,7 @@ export default function SignUpPage() {
   })
   const [buttonDisabled,setDisabled]=useState(true)
   const [loading,setLoading]=useState(false)
+  const [userExists, setUserExists] = useState(false)
   const onSignup = async (e:any) => {
     e.preventDefault();
    console.log('yoyo');
@@ -35,6 +36,11 @@ export default function SignUpPage() {
     } catch (error:any) {
       //toast.error(error.message)
       console.log('Sign Up Failed',error);
+      console.log(error.response.request.status);
+      
+      if(error.response.request.status===500){
+        setUserExists(true)
+      }
     } finally {
       setLoading(false)
     }
@@ -94,6 +100,8 @@ useEffect(() => {
         {buttonDisabled ? 'No sign up': 'Sign Up'}
         </button>
         <Link href="/login">Visit Login</Link>
+      
+        {userExists &&  <p className="border border-red-500 p-2 mt-4">Username Already exists</p>}
       </form>
     </div >
   );

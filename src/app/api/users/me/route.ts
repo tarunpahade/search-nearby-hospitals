@@ -1,12 +1,12 @@
-import client from "@/dbConfig/dbConfig";
+import Users from "@/dbConfig/dbConfig";
 import { getDataFromToken } from "@/helpers/getDataFromToken";
 import { ObjectId } from "mongodb";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest) {
     try {
-        const db = client.db("test");
-        const Users = db.collection("users");
+       
+        
         const userId = getDataFromToken(request);
         console.log('here is user id',userId);
         

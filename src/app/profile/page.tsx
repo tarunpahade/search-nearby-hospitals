@@ -19,14 +19,16 @@ export default function ProfilePage() {
   }
   const getUserDetails = async () => {
  const res=await axios.get('/api/users/me')
-  console.log(res);
+  console.log(res.data.data.isVerified);
   setData(res.data.data.username)
+
+  
   }
   return (
     <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }} >
       <h1>Profile   </h1>
       <span>      ,</span>
-      <h2>{data === 'nothing'? " , No data  ": <Link href={`/profile/${data}`}>{data}</Link>}</h2>
+      <h2>{data==='nothing' ? " , No data  ": <Link href={`/profile/${data}`}> {data} </Link>}</h2>
       <button onClick={logout} style={{ padding: 10, borderWidth: 1, paddingRight: 15, paddingLeft: 15, margin: 5, borderRadius: 12, alignContent: 'center' }}
       >Logout</button>
        <button onClick={getUserDetails} style={{ padding: 10, borderWidth: 1, paddingRight: 15, paddingLeft: 15, margin: 5, borderRadius: 12, alignContent: 'center' }}
