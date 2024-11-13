@@ -2,6 +2,10 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 ## Getting Started
 
+make a "Place Details" request by providing a place ID obtained from a previous search, and specify the "phone_number" field in your request to retrieve the phone number associated with that location
+
+
+
 First, run the development server:
 
 ```bash

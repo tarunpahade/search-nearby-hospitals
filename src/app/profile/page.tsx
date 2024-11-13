@@ -18,9 +18,16 @@ export default function ProfilePage() {
     }
   }
   const getUserDetails = async () => {
- const res=await axios.get('/api/users/me')
-  console.log(res.data.data.isVerified);
-  setData(res.data.data.username)
+//  const res=await axios.get('/api/users/me')
+//   console.log(res.data.data.isVerified);
+  // setData(res.data.data.username)
+  const response = await axios.post('https://hapi.fhir.org/baseR4/Patient', {
+    resourceType: 'Patient',
+    name: [{ use: 'official', family: 'Doe', given: 'tarun' }],
+  });
+console.log(response);
+
+
 
   
   }
