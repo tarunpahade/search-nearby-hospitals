@@ -1,7 +1,6 @@
 
 import { connect } from "@/dbConfig/dbConfig";
 import Users from "@/dbConfig/dbConfig"; 
-import { NextApiRequest, NextApiResponse } from "next";
 import bcryptjs from "bcryptjs";
 import { NextResponse } from "next/server";
 import { convertStreamToJson } from "@/helpers/convertStremToJson";
@@ -9,7 +8,7 @@ import { sendMail } from "@/helpers/mailer";
 
 
 
-export async function POST(request: NextApiRequest) {
+export async function POST(request: any) {
   try {
     const reqBody = await convertStreamToJson(request.body);
     console.log('this is body',reqBody);

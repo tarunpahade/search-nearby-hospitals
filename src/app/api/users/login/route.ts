@@ -5,7 +5,7 @@ import jwt from "jsonwebtoken";
 import { convertStreamToJson } from "@/helpers/convertStremToJson";
 import { NextResponse } from "next/server";
 import axios from "axios";
-export async function POST(request: NextApiRequest) {
+export async function POST(request:any) {
   try {
     const reqBodyb = await await convertStreamToJson(request.body);
    
