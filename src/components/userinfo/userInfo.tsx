@@ -20,16 +20,13 @@ interface PatientData {
   conditions: any[];
 }
 
-export default function UserInfo({patientData,setPatientData}:any) {
-  const [isOpen, setIsOpen] = useState(false);
+export default function UserInfo({patientData,setPatientData,isOpen}:any) {
+  const [isOpen2, setIsOpen] = useState(true);
   const [name, setName] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    setIsOpen(true);
-  }, []);
 
   const fetchPatientData = async () => {
     try {
